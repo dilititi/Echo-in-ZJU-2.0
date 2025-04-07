@@ -4,6 +4,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OSS_ENDPOINT: "https://oss-cn-hangzhou.aliyuncs.com"
+      OSS_BUCKET: "echo-zju"
     steps:
       # ▼▼▼ 注意这里必须有 2 个空格的缩进层级 ▼▼▼
       - name: Cache Dependencies
@@ -18,3 +21,9 @@ jobs:
           # ▼▼▼ 恢复键层级需要 4 空格缩进 ▼▼▼
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Upload files
+        env:
+          OSS_KEY_ID: ${{ OSS_ACCESS_KEY_ID }}
+          OSS_KEY_SECRET: ${{ OSS_ACCESS_KEY_SECRET }}
+        run: server.py
+            
